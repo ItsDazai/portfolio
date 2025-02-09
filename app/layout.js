@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'] // Include the weights you need
-})
+  subsets: ['latin'], // Or any other subsets you need
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'], // Specify all the weights you will use
+});
 
 export const metadata = {
   title: "Afzal Parwez",
