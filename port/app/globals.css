@@ -1,0 +1,207 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+/* ... (avatar or main styles) */
+
+
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #000000;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+/* ... (Parallaxx  styles) */
+
+
+
+.parallax-container {
+  height: 65vh;
+  width: 100%;
+  overflow-x: hidden;
+  margin-top: 50vh;
+  padding-left: 0;
+  position: relative; /* Needed for drag constraints */
+  background-color: #000000;
+}
+
+.parallax-placeholder {
+  height: 65vh; /* Match parallax container height */
+  width: 100%;
+}
+
+.image-row {
+  display: flex;
+  white-space: nowrap;
+  margin-left: 0;
+}
+
+.image-item {
+  width: 300px;
+  margin: 10px;
+  flex-shrink: 0;
+}
+
+.image-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.parallax-container .image-row .image-item:first-child {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.image-item {
+  background-color: #000000; /* Replace with the actual color from your image edge */
+}
+
+.about-me-container {
+  width: fit-content; /* Adjust as needed */
+  margin: auto; /* Center the container */
+  position: relative; /* For positioning pseudo-element */
+  align-items: center; 
+  justify-content: center;
+  padding-top: 0;
+}
+
+.about-me-container svg {
+width: 100%;
+height: auto;
+}
+
+.about-me-container text {
+stroke: white; /* Initial stroke color */
+stroke-width: 3; /* Adjust stroke width */
+fill: none; /* Initially no fill */
+font-weight: 900; /* Or any other font style */
+font-family: montserrat; /* Choose your font */
+animation: textFill 1s forwards; /* Trigger animation */
+animation-play-state: paused; /* Initially paused */
+font-size: 6vw;
+}
+
+/* JavaScript to control animation on scroll */
+body.animate .about-me-container text {
+animation-play-state: running;
+}
+
+@keyframes textFill {
+to {
+  fill: white; /* Final fill color */
+  stroke-width: 0; /* Stroke disappears */
+}
+}
+
+.text-container {
+  width: 60%; /* Adjust width as needed */
+  margin: auto; /* Center the container */
+  text-align: center; /* Center the text within the container */
+  font-family: montserrat;
+  font-weight: 300;
+  font-size: ;
+}
+
+.services-container {
+  width: 80%; /* Adjust width as needed */
+  margin: 20px auto; /* Center the container */
+  padding: 20px; /* Add some padding */
+  background-color: #111; /* Example background color */
+  border-radius: 8px; /* Example border radius */
+}
+
+.services-content {
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
+  gap: 20px; /* Spacing between items */
+}
+
+.services-title {
+  font-size: 4vw; /* Example size */
+  color: white;
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: montserrat;
+  font-weight: 800
+}
+
+.service-subtitle{
+  font-size: 6rem; /* Example size */
+  color: white;
+  font-weight: 600;
+  font-family: montserrat
+}
+
+
+.service-item {
+  display: flex;
+  gap: 20px; /* Spacing between number and description */
+}
+
+.service-number {
+  font-size: 6rem; /* Example size */
+  color: white;
+  font-weight: 500;
+  font-family: montserrat
+}
+
+.service-description {
+  color: white;
+  font-family: montserrat;
+  font-weight: 100;
+}
+
+.service-description h3 {
+  font-size: 2rem; /* Example size */
+  margin-bottom: 10px;
+}
+
+.service-description p {
+  font-size: 1.2rem; /* Example size */
+  line-height: 1.5;
+}
+
+/* Make it responsive */
+@media (max-width: 768px) {
+  .service-item {
+    flex-direction: column; /* Stack on smaller screens */
+    align-items: center; /* Center horizontally */
+    text-align: center;
+  }
+
+  .service-number {
+    font-size: 4rem;
+    margin-bottom: 10px;
+    font-weight: 300;
+    font-family: montserrat
+  }
+}
+
+.full-screen-section {
+  min-height: 100vh; /* Ensure full viewport height */
+  display: flex; /* Use flexbox for vertical centering */
+  flex-direction: column;
+  justify-content: center; /* Vertically center content */
+  align-items: center; /* Horizontally center content */
+  padding: 20px; /* Add some padding */
+}
