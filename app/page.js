@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import './globals.css';
+import Head from 'next/head';
 
 const imagesData = [
   { image: '/IPR_EVENT.png', title: 'Image 1' },
@@ -209,7 +210,11 @@ const Avatar = () => {
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen bg-black p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-montserrat)]">
-
+<Head>
+      <title>Afzal Parwez</title>
+      <meta name="description" content="Portfolio of Afzal Parwez" />
+      <link rel="icon" href="/avatar.ico" />
+    </Head>
 
       {/* Title main text */}
 
