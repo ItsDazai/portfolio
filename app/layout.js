@@ -1,5 +1,7 @@
 import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import "./globals.css";
+import { imageConfigDefault } from "next/dist/shared/lib/image-config";
+import Avatar from "./page";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,6 +21,7 @@ const montserrat = Montserrat({
 export const metadata = {
   title: "Afzal Parwez",
   description: "Portfolio of Afzal Parwez",
+  icons: "icons.ico",
 };
 
 export default function RootLayout({ children }) {

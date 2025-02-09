@@ -210,15 +210,10 @@ const Avatar = () => {
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen bg-black p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-montserrat)]">
-<Head>
-      <title>Afzal Parwez</title>
-      <meta name="description" content="Portfolio of Afzal Parwez" />
-      <link rel="icon" href="/avatar.ico" />
-    </Head>
+      
 
       {/* Title main text */}
-
-
+  
       <h1 className="text-[20vw] sm:text-[15vw] font-black text-center sm:text-center mt-[30vw] sm:mt-[5vw] text-white">
         HI, THERE
       </h1>
