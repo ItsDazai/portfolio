@@ -1,28 +1,35 @@
+// page.js
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import './globals.css';
-import Head from 'next/head';
 
 const imagesData = [
   { image: '/IPR_EVENT.png', title: 'Image 1' },
   { image: '/Pythonworkshop.png', title: 'Image 2' },
   { image: '/Pythonworkshop.png', title: 'Image 2' },
   { image: '/IPR_EVENT.png', title: 'Image 3' },
-  // ... more images
 ];
 
 const Avatar = () => {
   const avatarRef = useRef(null);
   const row1Ref = useRef(null);
   const row2Ref = useRef(null);
-  const [windowWidth, setWindowWidth] = useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [scrollLeft1, setScrollLeft1] = useState(0);
   const [scrollLeft2, setScrollLeft2] = useState(0);
+  const [isClient, setIsClient] = useState(false);
 
+  // Initialize client-side rendering check
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Mouse move effect for avatar
+  useEffect(() => {
+    if (!isClient) return;
+
     const handleMouseMove = (event) => {
       if (avatarRef.current) {
         const { clientX, clientY } = event;
@@ -50,9 +57,12 @@ const Avatar = () => {
         avatarRef.current.removeEventListener('mouseleave', handleMouseLeave);
       }
     };
-  }, []);
+  }, [isClient]);
 
+  // Scroll effect for parallax
   useEffect(() => {
+    if (!isClient) return;
+
     const handleScroll = () => {
       setScrollPosition(window.scrollY);
       const scrollY = window.scrollY;
@@ -72,155 +82,81 @@ const Avatar = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isClient]);
 
+  // About me animation
   useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
+    if (!isClient) return;
 
-    window.addEventListener('resize', handleResize);
-    handleResize();
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    const resetScroll = () => {
-      if (row1Ref.current) {
-        const rowWidth = row1Ref.current.scrollWidth;
-        if (Math.abs(scrollLeft1) >= rowWidth / 2) {
-          row1Ref.current.style.transform = `translateX(${scrollLeft1 % rowWidth}px)`;
-          setScrollLeft1(scrollLeft1 % rowWidth);
-        }
-      }
-      if (row2Ref.current) {
-        const rowWidth = row2Ref.current.scrollWidth;
-        if (Math.abs(scrollLeft2) >= rowWidth / 2) {
-          row2Ref.current.style.transform = `translateX(${scrollLeft2 % rowWidth}px)`;
-          setScrollLeft2(scrollLeft2 % rowWidth);
-        }
-      }
-    };
-
-    window.addEventListener('scroll', resetScroll);
-    return () => {
-      window.removeEventListener('scroll', resetScroll);
-    };
-  }, [scrollLeft1, scrollLeft2]);
-
-  const imagesPerRow = Math.ceil(imagesData.length / 2);
-
-  const calculateRepetitions = (rowWidth) => {
-    const visibleWidth = window.innerWidth;
-    return Math.ceil(visibleWidth / rowWidth) + 2; // Buffer for smoother scrolling
-  };
-
-  const repetitions1 = calculateRepetitions(310);
-  const repetitions2 = calculateRepetitions(310);
-
-  const repeatedImagesData1 = [];
-  const repeatedImagesData2 = [];
-
-  for (let i = 0; i < repetitions1; i++) {
-    repeatedImagesData1.push(...imagesData.slice(0, imagesPerRow));
-  }
-  for (let i = 0; i < repetitions2; i++) {
-    repeatedImagesData2.push(...imagesData.slice(imagesPerRow));
-  }
-
-  const initialOffset1 = -(300 + 20) * 1.2; // Calculate initial offset for row1
-  const initialOffset2 = -(300 + 20) * 1.2; // Calculate initial offset for row2
-
-  const endOffset1 = -row1Ref?.current?.scrollWidth + window.innerWidth; // Calculate end offset for row1
-  const endOffset2 = -row2Ref?.current?.scrollWidth + window.innerWidth; // Calculate end offset for row2
-
-  useEffect(() => {
     const handleScroll = () => {
-      setScrollPosition(window.scrollY);
-      const scrollY = window.scrollY;
-      const speed1 = 0.5;
-      const speed2 = -0.3;
+      const aboutMeContainer = document.querySelector('.about-me-container');
+      if (!aboutMeContainer) return;
 
-      if (row1Ref.current) {
-        const newScrollLeft1 = scrollY * speed1 + initialOffset1; // Include initial offset
-        if (newScrollLeft1 <= 0 && newScrollLeft1 >= endOffset1) { // Check bounds
-          row1Ref.current.style.transform = `translateX(${newScrollLeft1}px)`;
-        } else if (newScrollLeft1 > 0) {
-            row1Ref.current.style.transform = `translateX(0px)`;
-        } else {
-          row1Ref.current.style.transform = `translateX(${endOffset1}px)`;
-        }
-      }
+      const text = aboutMeContainer.querySelector('text');
+      if (!text) return;
 
-      if (row2Ref.current) {
-        const newScrollLeft2 = scrollY * speed2 + initialOffset2; // Include initial offset
-         if (newScrollLeft2 <= 0 && newScrollLeft2 >= endOffset2) { // Check bounds
-          row2Ref.current.style.transform = `translateX(${newScrollLeft2}px)`;
-        } else if (newScrollLeft2 > 0) {
-            row2Ref.current.style.transform = `translateX(0px)`;
-        } else {
-          row2Ref.current.style.transform = `translateX(${endOffset2}px)`;
-        }
+      const triggerPoint = aboutMeContainer.offsetTop - window.innerHeight * 0.8;
+
+      if (window.scrollY > triggerPoint) {
+        text.style.animationPlayState = 'running';
+      } else {
+        text.style.animationPlayState = 'paused';
       }
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [endOffset1, endOffset2]); // Add endOffset values to dependency array
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isClient]);
 
+  // Text container animation
+  useEffect(() => {
+    if (!isClient) return;
 
-  {/* About me */}
+    const handleTextScroll = () => {
+      const textContainer = document.querySelector('.text-container');
+      if (!textContainer) return;
 
-  
-  window.addEventListener('scroll', () => {
-    const aboutMeContainer = document.querySelector('.about-me-container'); // Get the container
-    const text = aboutMeContainer.querySelector('text'); // Get the text element
-  
-    const triggerPoint = aboutMeContainer.offsetTop - window.innerHeight * 0.8; // Adjust 0.8 as needed
-  
-    if (window.scrollY > triggerPoint) {
-      text.style.animationPlayState = 'running'; // Play animation
-    } else {
-        text.style.animationPlayState = 'paused'; // Pause/rewind
-    }
-  });
-  
-  
-  window.addEventListener('scroll', () => {
-      const textContainer = document.querySelector('.text-container'); // Get the container
-      const paragraph = textContainer.querySelector('p'); // Get the text element
-  
-      const triggerPoint = textContainer.offsetTop - window.innerHeight * 0.8; // Adjust 0.8 as needed
-  
+      const paragraph = textContainer.querySelector('p');
+      if (!paragraph) return;
+
+      const triggerPoint = textContainer.offsetTop - window.innerHeight * 0.8;
+
       if (window.scrollY > triggerPoint) {
-          paragraph.style.animationPlayState = 'running'; // Play animation
+        paragraph.style.animationPlayState = 'running';
       } else {
-          paragraph.style.animationPlayState = 'paused'; // Pause/rewind
+        paragraph.style.animationPlayState = 'paused';
       }
-  });
-  
+    };
 
+    window.addEventListener('scroll', handleTextScroll);
+    return () => window.removeEventListener('scroll', handleTextScroll);
+  }, [isClient]);
+
+  const imagesPerRow = Math.ceil(imagesData.length / 2);
+
+  const calculateRepetitions = () => {
+    if (!isClient) return 1;
+    const visibleWidth = window.innerWidth;
+    return Math.ceil(visibleWidth / 310) + 2;
+  };
+
+  const repetitions = calculateRepetitions();
+  const repeatedImagesData1 = Array(repetitions).fill(imagesData.slice(0, imagesPerRow)).flat();
+  const repeatedImagesData2 = Array(repetitions).fill(imagesData.slice(imagesPerRow)).flat();
+
+  const initialOffset1 = isClient ? -(300 + 20) * 1.2 : 0;
+  const initialOffset2 = isClient ? -(300 + 20) * 1.2 : 0;
+
+  if (!isClient) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen bg-black p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-montserrat)]">
-      
-
-      {/* Title main text */}
-  
       <h1 className="text-[20vw] sm:text-[15vw] font-black text-center sm:text-center mt-[30vw] sm:mt-[5vw] text-white">
         HI, THERE
       </h1>
-
-
-      {/* Avatar Div */}
-
 
       <main className="flex flex-col gap-0 row-start-2 items-center sm:items-start mt-[1rem] sm:mt-[-5rem]">
         <Image
@@ -233,10 +169,6 @@ const Avatar = () => {
           className="rounded-full transition-transform duration-200 ease-out"
         />
       </main>
-
-
-      {/* Parallax Div */}
-
 
       <div className="parallax-container overflow-hidden bg-black">
         <div className="image-row" ref={row1Ref} style={{ transform: `translateX(${initialOffset1}px)` }}>
@@ -253,33 +185,29 @@ const Avatar = () => {
             </div>
           ))}
         </div>
-      </div>  
+      </div>
       <div className="parallax-placeholder"></div>
 
-      {/* About me Div */}
-<div className='full-screen-section'>
-      <div className="about-me-container">
-        <text x="50%" y="50%" className="stroke-text" dominantBaseline="middle" textAnchor="middle">
-          About Me
-        </text>
-      </div>
- 
-      <div class="text-container justify-center items-center align-middle mt-[1rem] sm:mt-[-20rem]">
-        <p>Recent computer science graduate with a strong foundation in programming, algorithms, and software
+      <div className='full-screen-section'>
+        <div className="about-me-container">
+          <text x="50%" y="50%" className="stroke-text" dominantBaseline="middle" textAnchor="middle">
+            About Me
+          </text>
+        </div>
+
+        <div className="text-container justify-center items-center align-middle mt-[1rem] sm:mt-[-20rem]">
+          <p>Recent computer science graduate with a strong foundation in programming, algorithms, and software
 engineering principles.</p>
-        <p>Skilled in Python, JavaScript, and web development basics, with a passion for
-building efficient, user-centered applications.</p> 
-        <p>Quick learner with a keen interest in expanding skills through
+          <p>Skilled in Python, JavaScript, and web development basics, with a passion for
+building efficient, user-centered applications.</p>
+          <p>Quick learner with a keen interest in expanding skills through
 real-world projects and collaborative environments.</p>
-        <p>Committed to bring creativity and a problem-solving mindset to a dynamic development team</p>
-      </div>  
+          <p>Committed to bring creativity and a problem-solving mindset to a dynamic development team</p>
+        </div>
       </div>
 
-      {/* Education */}
-
-
-      <section className="full-screen-section services-container"> 
-        <div className="services-content"> {/* Container for the content */}
+      <section className="full-screen-section services-container">
+        <div className="services-content">
           <h2 className="services-title mt-[-1rem] sm:mt-[-10rem]">Education</h2>
 
           <div className="service-item mt-[10rem]">
@@ -299,20 +227,12 @@ real-world projects and collaborative environments.</p>
               <p className='mt-[-0.5rem]'>~ Jul 2021 to May 2024</p>
             </div>
           </div>
-
-          {/* Add more service items as needed */}
         </div>
-      </section>  
+      </section>
 
-
-
-                  {/* Certification */}
-
-
-
-      <section className="full-screen-section services-container">  
-        <div className="services-content"> {/* Container for the content */}
-        <h2 className="services-title mt-[-1rem] sm:mt-[-20rem]">Certification</h2>
+      <section className="full-screen-section services-container">
+        <div className="services-content">
+          <h2 className="services-title mt-[-1rem] sm:mt-[-20rem]">Certification</h2>
 
           <div className="service-item">
             <div className="service-number mb-[-1rem] mt-[-1.5rem] pl-2 pr-5">01</div>
@@ -333,18 +253,15 @@ real-world projects and collaborative environments.</p>
           </div>
 
           <div className="service-item">
-            <div className="service-number mb-[-1rem] mt-[-1.5rem] p-1">02</div>
+            <div className="service-number mb-[-1rem] mt-[-1.5rem] p-1">03</div>
             <div className="service-description">
-              <h3 className="service-subtitle">UpGrad</h3>
-              <p className='mt-[-1rem]'>Full Stack Java Development</p>
-              <p className='mt-[-0.5rem]'>~ Nov 2023 to Dec 2024</p>
+              <h3 className="service-subtitle">NIPAM</h3>
+              <p className='mt-[-1rem]'>IP Awareness/Training Program</p>
+              <p className='mt-[-0.5rem]'>~ March 2023</p>
             </div>
           </div>
-
-          {/* Add more service items as needed */}
         </div>
-      </section>  
-
+      </section>
     </div>
   );
 };

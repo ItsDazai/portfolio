@@ -1,4 +1,10 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-export default nextConfig;
+const nextConfig = {
+    reactStrictMode: true,
+    images: {
+      unoptimized: true, // This can help with deployment issues
+      domains: [], // Add any image domains you're using
+    },
+  }
+  
+  module.exports = nextConfig
