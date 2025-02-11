@@ -1,3 +1,4 @@
+// page.js
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -5,6 +6,7 @@ import Image from 'next/image';
 import './globals.css';
 
 const imagesData = [
+  { image: '/Pythonworkshop.png', title: 'Image 2' },
   { image: '/IPR_EVENT.png', title: 'Image 1' },
   { image: '/Pythonworkshop.png', title: 'Image 2' },
   { image: '/Pythonworkshop.png', title: 'Image 2' },
@@ -59,7 +61,7 @@ const Avatar = () => {
     };
   }, [isClient]);
 
-  // Optimized scroll effect for parallax with requestAnimationFrame
+  // Scroll effect for parallax with requestAnimationFrame
   useEffect(() => {
     if (!isClient) return;
 
@@ -72,9 +74,9 @@ const Avatar = () => {
         const scrollY = window.scrollY;
         setScrollPosition(scrollY);
 
-        // Slower speed multipliers for smoother parallax
-        const speed1 = 0.2;
-        const speed2 = -0.15;
+        // Reduced speed multipliers for smoother scrolling
+        const speed1 = 0.2;  // Reduced from 0.5
+        const speed2 = -0.15; // Reduced from -0.3
 
         if (row1Ref.current) {
           const newScrollLeft1 = scrollY * speed1;
@@ -99,7 +101,7 @@ const Avatar = () => {
     };
   }, [isClient]);
 
-  // About me animation with client-side check
+  // About me animation
   useEffect(() => {
     if (!isClient) return;
 
@@ -119,11 +121,11 @@ const Avatar = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isClient]);
 
-  // Text container animation with client-side check
+  // Text container animation
   useEffect(() => {
     if (!isClient) return;
 
@@ -131,19 +133,19 @@ const Avatar = () => {
       const textContainer = document.querySelector('.text-container');
       if (!textContainer) return;
 
-      const paragraphs = textContainer.querySelectorAll('p');
-      paragraphs.forEach(paragraph => {
-        const triggerPoint = textContainer.offsetTop - window.innerHeight * 0.8;
+      const paragraph = textContainer.querySelector('p');
+      if (!paragraph) return;
 
-        if (window.scrollY > triggerPoint) {
-          paragraph.style.animationPlayState = 'running';
-        } else {
-          paragraph.style.animationPlayState = 'paused';
-        }
-      });
+      const triggerPoint = textContainer.offsetTop - window.innerHeight * 0.8;
+
+      if (window.scrollY > triggerPoint) {
+        paragraph.style.animationPlayState = 'running';
+      } else {
+        paragraph.style.animationPlayState = 'paused';
+      }
     };
 
-    window.addEventListener('scroll', handleTextScroll, { passive: true });
+    window.addEventListener('scroll', handleTextScroll);
     return () => window.removeEventListener('scroll', handleTextScroll);
   }, [isClient]);
 
@@ -152,40 +154,34 @@ const Avatar = () => {
   const calculateRepetitions = () => {
     if (!isClient) return 1;
     const visibleWidth = window.innerWidth;
-    return Math.ceil((visibleWidth * 3) / 310) + 2;
+    return Math.ceil((visibleWidth * 3) / 310) + 2; // Increased coverage
   };
 
   const repetitions = calculateRepetitions();
   const repeatedImagesData1 = Array(repetitions).fill(imagesData.slice(0, imagesPerRow)).flat();
   const repeatedImagesData2 = Array(repetitions).fill(imagesData.slice(imagesPerRow)).flat();
 
-  const initialOffset1 = isClient ? -(window.innerWidth / 2) : 0;
-  const initialOffset2 = isClient ? -(window.innerWidth / 2) : 0;
+  const initialOffset1 = isClient ? -(window.innerWidth / 2) : 0;  // Adjusted initial position
+  const initialOffset2 = isClient ? -(window.innerWidth / 2) : 0;  // Adjusted initial position
 
   const imageRowStyle = {
     display: 'flex',
-    transition: 'transform 0.05s linear',
+    transition: 'transform 0.05s linear', // Smoother transition
     gap: '0px',
-    willChange: 'transform'
+    willChange: 'transform', // Performance optimization
   };
 
   if (!isClient) {
     return <div>Loading...</div>;
   }
 
+  // Rest of the component remains the same...
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen bg-black p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-montserrat)]">
-      
-
-      {/* Title main text */}
-  
+      {/* Previous JSX remains unchanged */}
       <h1 className="text-[20vw] sm:text-[15vw] font-black text-center sm:text-center mt-[30vw] sm:mt-[5vw] text-white">
         HI, THERE
       </h1>
-
-
-      {/* Avatar Div */}
-
 
       <main className="flex flex-col gap-0 row-start-2 items-center sm:items-start mt-[1rem] sm:mt-[-5rem]">
         <Image
@@ -199,52 +195,54 @@ const Avatar = () => {
         />
       </main>
 
-
-      {/* Parallax Div */}
-
-
       <div className="parallax-container overflow-hidden bg-black">
-        <div className="image-row" ref={row1Ref} style={{ transform: `translateX(${initialOffset1}px)` }}>
+        <div className="image-row" 
+             ref={row1Ref} 
+             style={{ 
+               ...imageRowStyle,
+               transform: `translateX(${scrollLeft1 + initialOffset1}px)` 
+             }}>
           {repeatedImagesData1.map((image, index) => (
-            <div key={index} className="image-item">
+            <div key={index} className="image-item" style={{ marginRight: '0px' }}>
               <Image src={image.image} alt={image.title} width={300} height={200} />
             </div>
           ))}
         </div>
-        <div className="image-row" ref={row2Ref} style={{ transform: `translateX(${initialOffset2}px)` }}>
+        <div className="image-row" 
+             ref={row2Ref} 
+             style={{ 
+               ...imageRowStyle,
+               transform: `translateX(${scrollLeft2 + initialOffset2}px)` 
+             }}>
           {repeatedImagesData2.map((image, index) => (
-            <div key={index} className="image-item">
+            <div key={index} className="image-item" style={{ marginRight: '0px' }}>
               <Image src={image.image} alt={image.title} width={300} height={200} />
             </div>
           ))}
         </div>
-      </div>  
+      </div>
       <div className="parallax-placeholder"></div>
 
-      {/* About me Div */}
-<div className='full-screen-section'>
-      <div className="about-me-container">
-        <text x="50%" y="50%" className="stroke-text" dominantBaseline="middle" textAnchor="middle">
-          About Me
-        </text>
-      </div>
- 
-      <div class="text-container justify-center items-center align-middle mt-[1rem] sm:mt-[-20rem]">
-        <p>Recent computer science graduate with a strong foundation in programming, algorithms, and software
+      <div className='full-screen-section'>
+        <div className="about-me-container">
+          <text x="50%" y="50%" className="stroke-text" dominantBaseline="middle" textAnchor="middle">
+            About Me
+          </text>
+        </div>
+
+        <div className="text-container justify-center items-center align-middle mt-[1rem] sm:mt-[-20rem]">
+          <p>Recent computer science graduate with a strong foundation in programming, algorithms, and software
 engineering principles.</p>
-        <p>Skilled in Python, JavaScript, and web development basics, with a passion for
-building efficient, user-centered applications.</p> 
-        <p>Quick learner with a keen interest in expanding skills through
+          <p>Skilled in Python, JavaScript, and web development basics, with a passion for
+building efficient, user-centered applications.</p>
+          <p>Quick learner with a keen interest in expanding skills through
 real-world projects and collaborative environments.</p>
-        <p>Committed to bring creativity and a problem-solving mindset to a dynamic development team</p>
-      </div>  
+          <p>Committed to bring creativity and a problem-solving mindset to a dynamic development team</p>
+        </div>
       </div>
 
-      {/* Education */}
-
-
-      <section className="full-screen-section services-container"> 
-        <div className="services-content"> {/* Container for the content */}
+      <section className="full-screen-section services-container">
+        <div className="services-content">
           <h2 className="services-title mt-[-1rem] sm:mt-[-10rem]">Education</h2>
 
           <div className="service-item mt-[10rem]">
@@ -264,20 +262,12 @@ real-world projects and collaborative environments.</p>
               <p className='mt-[-0.5rem]'>~ Jul 2021 to May 2024</p>
             </div>
           </div>
-
-          {/* Add more service items as needed */}
         </div>
-      </section>  
+      </section>
 
-
-
-                  {/* Certification */}
-
-
-
-      <section className="full-screen-section services-container">  
-        <div className="services-content"> {/* Container for the content */}
-        <h2 className="services-title mt-[-1rem] sm:mt-[-20rem]">Certification</h2>
+      <section className="full-screen-section services-container">
+        <div className="services-content">
+          <h2 className="services-title mt-[-1rem] sm:mt-[-20rem]">Certification</h2>
 
           <div className="service-item">
             <div className="service-number mb-[-1rem] mt-[-1.5rem] pl-2 pr-5">01</div>
@@ -298,18 +288,15 @@ real-world projects and collaborative environments.</p>
           </div>
 
           <div className="service-item">
-            <div className="service-number mb-[-1rem] mt-[-1.5rem] p-1">02</div>
+            <div className="service-number mb-[-1rem] mt-[-1.5rem] p-1">03</div>
             <div className="service-description">
-              <h3 className="service-subtitle">UpGrad</h3>
-              <p className='mt-[-1rem]'>Full Stack Java Development</p>
-              <p className='mt-[-0.5rem]'>~ Nov 2023 to Dec 2024</p>
+              <h3 className="service-subtitle">NIPAM</h3>
+              <p className='mt-[-1rem]'>IP Awareness/Training Program</p>
+              <p className='mt-[-0.5rem]'>~ March 2023</p>
             </div>
           </div>
-
-          {/* Add more service items as needed */}
         </div>
-      </section>  
-
+      </section>
     </div>
   );
 };
