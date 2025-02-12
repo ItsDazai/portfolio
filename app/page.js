@@ -7,8 +7,8 @@ import './globals.css';
 const imagesData = [
   { image: '/IPR_EVENT.png', title: 'Image 1' },
   { image: '/Pythonworkshop.png', title: 'Image 2' },
-  { image: '/Pythonworkshop.png', title: 'Image 2' },
   { image: '/IPR_EVENT.png', title: 'Image 3' },
+  { image: '/Pythonworkshop.png', title: 'Image 2' },
 ];
 
 const Avatar = () => {
@@ -173,8 +173,16 @@ const Avatar = () => {
     return <div>Loading...</div>;
   }
 
+  
+  
+
+
+
+
+  
+//   #############################################################################
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen bg-black p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-montserrat)]">
+    <div className="grid grid-rows-[10px_1fr_20px] items-center justify-items-center min-h-screen bg-black p-8 pb-20 gap-16 sm:p-[1vw] sm:mt-[3vw] font-[family-name:var(--font-montserrat)]">
       
 
       {/* Title main text */}
@@ -221,14 +229,17 @@ const Avatar = () => {
       </div>  
       <div className="parallax-placeholder"></div>
 
+
       {/* About me Div */}
+
+
 <div className='full-screen-section'>
       <div className="about-me-container">
         <text x="50%" y="50%" className="stroke-text" dominantBaseline="middle" textAnchor="middle">
           About Me
         </text>
       </div>
- 
+        
       <div class="text-container justify-center items-center align-middle mt-[1rem] sm:mt-[-20rem]">
         <p>Recent computer science graduate with a strong foundation in programming, algorithms, and software
 engineering principles.</p>
