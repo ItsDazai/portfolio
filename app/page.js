@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import './globals.css';
+import StackedCards from './components/StackedCards';
 
 const imagesData = [
   { image: '/IPR_EVENT.png', title: 'Image 1' },
@@ -252,7 +253,9 @@ real-world projects and collaborative environments.</p>
       </div>
 
       {/* Education */}
-
+<div>
+  <StackedCards />
+</div>
 
       <section className="full-screen-section services-container"> 
         <div className="services-content"> {/* Container for the content */}
@@ -285,9 +288,10 @@ real-world projects and collaborative environments.</p>
                   {/* Certification */}
 
 
-
-      <section className="full-screen-section services-container">  
-        <div className="services-content"> {/* Container for the content */}
+{/*
+       <section className="full-screen-section services-container">  
+        <div className="services-content">    {/* Container for the content */}
+        {/*
         <h2 className="services-title mt-[-1rem] sm:mt-[-20rem]">Certification</h2>
 
           <div className="service-item">
@@ -318,8 +322,9 @@ real-world projects and collaborative environments.</p>
           </div>
 
           {/* Add more service items as needed */}
+          {/*
         </div>
-      </section>  
+      </section>   */}
 
     </div>
   );

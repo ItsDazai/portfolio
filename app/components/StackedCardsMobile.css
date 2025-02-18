@@ -1,0 +1,88 @@
+/* StackedCardsMobile.css */
+.mobile-stack-area {
+    width: 100%;
+    height: 400vh;
+    background: white;
+  }
+  
+  .mobile-left {
+    height: 20vh;
+    margin-top: 10px;
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+    background: white;
+    z-index: 2;
+    margin-bottom: 0px;
+  }
+  
+  .mobile-right {
+    width: 100%;
+    position: relative;
+    margin-top: 0px;
+    height: 400vh;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+  
+  .mobile-card {
+    width: 60vw;
+    height: 60vw;
+    border-radius: 25px;
+    position: fixed;
+    bottom: 20px;
+    transform: translateX(-50%);
+    transition: 0.5s ease-in-out;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    left: 50%;
+  }
+  
+  .mobile-card:nth-child(1) { background: #407AFF; }
+  .mobile-card:nth-child(2) { background: #DD3E58; }
+  .mobile-card:nth-child(3) { background: #BA71F5; }
+  .mobile-card:nth-child(4) { background: #F75CD0; }
+  
+  .mobile-title {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .mobile-sub-title {
+    font-size: 14px;
+    text-align: center;
+    padding: 0 15px;
+    margin-top: 20px;
+  }
+  
+  .mobile-sub-title button {
+    padding: 12px 25px;
+    background: black;
+    color: white;
+    border-radius: 8mm;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .mobile-sub {
+    font-size: 18px;
+    font-weight: 700;
+  }
+  
+  .mobile-content {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
